@@ -1,7 +1,5 @@
 # SpringUMA — Medical Records System
 
-> ⚠️ Replace `<YOUR_USER>` and `<YOUR_REPO>` with your actual GitHub account details.
-
 [![Estado del Build y Tests](https://github.com/mafese3/practica6_Infraestructuras.git/actions/workflows/ci.yml/badge.svg)](https://github.com/mafese3/practica6_Infraestructuras.git/actions/workflows/ci.yml)
 [![Cobertura (Jacoco)](https://raw.githubusercontent.com/mafese3/practica6_Infraestructuras.git/main/.github/badges/jacoco.svg)](https://github.com/mafese3/practica6_Infraestructuras/actions)
 [![Ramas Probadas](https://raw.githubusercontent.com/mafese3/practica6_Infraestructuras.git/main/.github/badges/branches.svg)](https://github.com/mafese3/practica6_Infraestructuras.git/actions)
