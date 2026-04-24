@@ -1,8 +1,8 @@
 # SpringUMA — Medical Records System
 
-[![Estado del Build y Tests](https://github.com/mafese3/practica6_Infraestructuras.git/actions/workflows/ci.yml/badge.svg)](https://github.com/mafese3/practica6_Infraestructuras.git/actions/workflows/ci.yml)
-[![Cobertura (Jacoco)](https://raw.githubusercontent.com/mafese3/practica6_Infraestructuras.git/main/.github/badges/jacoco.svg)](https://github.com/mafese3/practica6_Infraestructuras/actions)
-[![Ramas Probadas](https://raw.githubusercontent.com/mafese3/practica6_Infraestructuras.git/main/.github/badges/branches.svg)](https://github.com/mafese3/practica6_Infraestructuras.git/actions)
+[![Estado del Build y Tests](https://github.com/mafese3/practica6_Infraestructuras/actions/workflows/ci.yml/badge.svg)](https://github.com/mafese3/practica6_Infraestructuras.git/actions/workflows/ci.yml)
+[![Cobertura (Jacoco)](https://raw.githubusercontent.com/mafese3/practica6_Infraestructuras/main/.github/badges/jacoco.svg)](https://github.com/mafese3/practica6_Infraestructuras/actions)
+[![Ramas Probadas](https://raw.githubusercontent.com/mafese3/practica6_Infraestructuras/main/.github/badges/branches.svg)](https://github.com/mafese3/practica6_Infraestructuras.git/actions)
 
 A Spring Boot REST API that models a small medical records system. Built as a practice project for the **Software Maintenance and Testing** course at the University of Málaga.
 
