@@ -90,4 +90,67 @@ public class InformeControllerWebTestClientIT extends AbstractIntegration {
                 .expectStatus().isOk();
 
     }
+    @Test
+    @DisplayName("Crear informe y obtenerlo por ID de la imagen asociada")
+    void crearInforme_obtenerPorImagen() {
+        // Recuperamos la imagen que subimos en el setUp()
+        Imagen uploadedImage = testClient.get().uri("/imagen/paciente/" + paciente.getId())
+                .exchange()
+                .expectStatus().isOk()
+                .expectBodyList(Imagen.class)
+                .returnResult().getResponseBody().get(0);
+
+        Informe nuevoInforme = new Informe();
+        nuevoInforme.setContenido("No se aprecian anomalías claras en la mamografía.");
+        nuevoInforme.setImagen(uploadedImage);
+
+        // Crear informe
+        testClient.post().uri("/informe")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Mono.just(nuevoInforme), Informe.class)
+                .exchange()
+                .expectStatus().isCreated();
+
+        // Obtener informes de la imagen
+        testClient.get().uri("/informe/imagen/" + uploadedImage.getId())
+                .exchange()
+                .expectStatus().isOk()
+                .expectBodyList(Informe.class)
+                .hasSize(1)
+                .consumeWith(response -> {
+                    Informe informeResult = response.getResponseBody().get(0);
+                    assertTrue("No se aprecian anomalías claras en la mamografía.".equals(informeResult.getContenido()));
+                    assertTrue(informeResult.getPrediccion() != null); // Comprobar que le ha asignado la predicción
+                });
+    }
+
+    @Test
+    @DisplayName("Eliminar un informe")
+    void eliminarInforme() {
+        Imagen uploadedImage = testClient.get().uri("/imagen/paciente/" + paciente.getId())
+                .exchange()
+                .expectStatus().isOk()
+                .expectBodyList(Imagen.class)
+                .returnResult().getResponseBody().get(0);
+
+        Informe nuevoInforme = new Informe();
+        nuevoInforme.setContenido("Informe listo para eliminar");
+        nuevoInforme.setImagen(uploadedImage);
+
+        testClient.post().uri("/informe")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Mono.just(nuevoInforme), Informe.class)
+                .exchange()
+                .expectStatus().isCreated();
+
+        Informe informeCreado = testClient.get().uri("/informe/imagen/" + uploadedImage.getId())
+                .exchange()
+                .expectStatus().isOk()
+                .expectBodyList(Informe.class)
+                .returnResult().getResponseBody().get(0);
+
+        testClient.delete().uri("/informe/" + informeCreado.getId())
+                .exchange()
+                .expectStatus().isNoContent();
+    }
 }

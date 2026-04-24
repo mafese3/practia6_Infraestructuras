@@ -90,4 +90,58 @@ public class ImagenControllerWebTestClientIT extends AbstractIntegration {
         }
     }
 
-   }
+    @Test
+    @DisplayName("Subir imagen y confirmar su existencia en el listado del paciente")
+    void subirImagen_correctamente() {
+        subirImagen("healthy.png");
+
+        testClient.get().uri("/imagen/paciente/" + paciente.getId())
+                .exchange()
+                .expectStatus().isOk()
+                .expectBodyList(Imagen.class)
+                .hasSize(1)
+                .consumeWith(response -> {
+                    Imagen img = response.getResponseBody().get(0);
+                    assertTrue("healthy.png".equals(img.getNombre()));
+                });
+    }
+
+    @Test
+    @DisplayName("Realizar predicción IA de una imagen subida")
+    void realizarPrediccion_Imagen() {
+        subirImagen("healthy.png");
+
+        Imagen img = testClient.get().uri("/imagen/paciente/" + paciente.getId())
+                .exchange()
+                .expectStatus().isOk()
+                .expectBodyList(Imagen.class)
+                .returnResult().getResponseBody().get(0);
+
+        testClient.get().uri("/imagen/predict/" + img.getId())
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(String.class)
+                .consumeWith(response -> {
+                    String body = response.getResponseBody();
+                    assertTrue(body != null);
+                    assertTrue(body.contains("score")); // Confirmar que nos da el resultado aleatorio
+                });
+    }
+
+    @Test
+    @DisplayName("Eliminar una imagen")
+    void eliminarImagen() {
+        subirImagen("healthy.png");
+
+        Imagen img = testClient.get().uri("/imagen/paciente/" + paciente.getId())
+                .exchange()
+                .expectStatus().isOk()
+                .expectBodyList(Imagen.class)
+                .returnResult().getResponseBody().get(0);
+
+        testClient.delete().uri("/imagen/" + img.getId())
+                .exchange()
+                .expectStatus().isNoContent();
+    }
+
+}
